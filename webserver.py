@@ -1,5 +1,6 @@
 import socket
 import sys
+import random
 
 PACKET_SIZE = 4096
 
@@ -53,10 +54,10 @@ def handle_single_request(s):
     new_socket.sendall(prepare_body([
         "HTTP/1.1 200 OK",
         "Content-Type: text/plain",
-        "Content-Length: 6",
+        "Content-Length: 20",
         "Connection: close",
         "",
-        "Hello!"
+        f"Hello! {random.random()}"
     ]))
     new_socket.close()
 
