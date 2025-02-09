@@ -2,27 +2,14 @@ import socket
 import sys
 import random
 
-PACKET_SIZE = 4096
+from common.common import PACKET_SIZE, encode_data, listen_server, print_status_message, serve_request
+
 
 def prepare_body(body):
     body = [f"{el}\r\n" for el in body]
     body.append('\r\n')
     return encode_data("".join(body))
 
-def print_status_message(func):
-
-    def wrapper(s):
-        func_name = func.__name__
-        print(f'starting the function: {func_name}')
-        print('------------------------')
-        func(s)
-        print('------------------------')
-        print(f'execution of the function: {func_name} is completed')
-
-    return wrapper
-
-def encode_data(data):
-    return bytes(data, encoding='utf-8')
 
 @print_status_message
 def handle_single_request(s):
@@ -61,21 +48,6 @@ def handle_single_request(s):
     ]))
     new_socket.close()
 
-@print_status_message
-def serve_request(s):
-    """
-    Helper method to handle the requests
-    from different clients
-    """
-    while True:
-        handle_single_request(s)
-
-@print_status_message
-def listen_server(s):
-    """
-    Helper function to setup web-server!
-    """
-    s.listen()
 
 if __name__ == "__main__":
     args = sys.argv
@@ -86,7 +58,7 @@ if __name__ == "__main__":
     s.bind(('', port))
 
     listen_server(s)
-    serve_request(s)
+    serve_request(s, handle_single_request)
 
     
     
