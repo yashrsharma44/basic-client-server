@@ -2,14 +2,7 @@ import socket
 import sys
 import random
 
-from common.common import PACKET_SIZE, encode_data, listen_server, print_status_message, serve_request
-
-
-def prepare_body(body):
-    body = [f"{el}\r\n" for el in body]
-    body.append('\r\n')
-    return encode_data("".join(body))
-
+from common.common import PACKET_SIZE, listen_server, prepare_body, print_status_message, serve_request
 
 @print_status_message
 def handle_single_request(s):
@@ -48,10 +41,9 @@ def handle_single_request(s):
     ]))
     new_socket.close()
 
+def run_server():
 
-if __name__ == "__main__":
-    args = sys.argv
-    port = args[1] if len(args) > 1 else 20123
+    port = 20123
 
     s = socket.socket()
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -60,5 +52,5 @@ if __name__ == "__main__":
     listen_server(s)
     serve_request(s, handle_single_request)
 
-    
-    
+if __name__ == "__main__":
+    run_server()
