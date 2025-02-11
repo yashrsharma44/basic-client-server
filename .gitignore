@@ -5,6 +5,8 @@
 **.pyc
 *.pyo
 
+.vscode/
+
 # C extensions
 *.so
 
